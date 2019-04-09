@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
-import { getDay } from "./services.js";
+import { getEntry } from "./services.js";
 
 class App extends Component {
   state = {};
 
   componentDidMount() {
     (async () => {
-      let journalDayPage = await getDay();
+      let journalDayPage = await getEntry(2);
       this.setState(journalDayPage);
     })();
   }
