@@ -1,7 +1,7 @@
 export async function getEntry(date) {
-  const response = await fetch(`http://localhost:4000?date=${date}`);
   let entry;
   try {
+    const response = await fetch(`http://localhost:4000?date=${date}`);
     entry = await response.json();
   } catch (error) {
     console.error(`error fetching entry from api for date ${date}`);
@@ -11,13 +11,33 @@ export async function getEntry(date) {
 }
 
 export async function saveEntry(entry) {
-  const response = await fetch("http://localhost:4000/entries/new", {
-    method: "POST",
-    body: JSON.stringify(entry),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-  const data = await response.json();
-  debugger;
+  let savedEntry;
+  try {
+    const response = await fetch("http://localhost:4000/entries/new", {
+      method: "POST",
+      body: JSON.stringify(entry),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    savedEntry = await response.json();
+  } catch (error) {
+    console.error("error saving entry from api");
+    console.error(error);
+  }
+  return savedEntry;
+}
+
+export async function getAllEntries() {
+  let entries;
+  try {
+    const response = await fetch("http://localhost:4000/entries", {
+      method: "GET"
+    });
+    entries = await response.json();
+  } catch (error) {
+    console.error("error fetching all entries from api");
+    console.error(error);
+  }
+  return entries;
 }
