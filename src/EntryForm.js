@@ -20,6 +20,7 @@ const styles = theme => ({
 
 const defaultState = {
   isSubmitting: false,
+  goals: "",
   wins: "",
   lessonsLearned: ""
 };
@@ -52,11 +53,25 @@ class EntryForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { wins, lessonsLearned, isSubmitting } = this.state;
+    const { goals, wins, lessonsLearned, isSubmitting } = this.state;
 
     return (
       <div>
-        <h3>Wins</h3>
+        <h3>Daily</h3>
+        <TextField
+          name="goals"
+          id="filled-multiline-flexible"
+          label="Goals"
+          multiline
+          rowsMax="4"
+          value={goals}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="put your goals here"
+          variant="filled"
+        />
+
         <TextField
           name="wins"
           id="filled-multiline-flexible"
