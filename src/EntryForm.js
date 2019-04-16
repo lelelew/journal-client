@@ -1,17 +1,39 @@
 import React, { Component } from "react";
 import { saveEntry } from "./services.js";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
+  }
+});
 
 class EntryForm extends Component {
-  state = {};
+  state = {
+    isSubmitting: false
+  };
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault();
-    saveEntry(this.state);
+    this.setState({ isSubmitting: true });
+    await saveEntry(this.state);
+    this.setState({ isSubmitting: false });
   }
 
   handleChange(event) {
@@ -21,25 +43,52 @@ class EntryForm extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+    const { wins, lessonsLearned, isSubmitting } = this.state;
+
     return (
-      <form onSubmit={this.onSubmit}>
+      <div>
         <h3>Wins</h3>
-        <textarea
+        <TextField
           name="wins"
-          value={this.state.wins}
+          id="filled-multiline-flexible"
+          label="Wins"
+          multiline
+          rowsMax="4"
+          value={wins}
           onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="put your wins here"
+          variant="filled"
         />
 
-        <textarea
+        <TextField
           name="lessonsLearned"
-          value={this.state.lessonsLearned}
+          id="filled-multiline-flexible"
+          label="Lessons Learned"
+          multiline
+          rowsMax="4"
+          value={lessonsLearned}
           onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="put your lessons learned here"
+          variant="filled"
         />
 
-        <button type="submit">Submit</button>
-      </form>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.onSubmit}
+          disabled={isSubmitting}
+        >
+          Submit
+        </Button>
+      </div>
     );
   }
 }
 
-export default EntryForm;
+export default withStyles(styles)(EntryForm);

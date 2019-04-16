@@ -5,6 +5,20 @@ import EntryForm from "./EntryForm.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 2
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    color: theme.palette.text.secondary
+  }
+});
 
 class App extends Component {
   state = {
@@ -22,25 +36,35 @@ class App extends Component {
 
   render() {
     const { allEntries } = this.state;
+    const { classes } = this.props;
+
     return (
-      <div>
-        <List>
-          {allEntries &&
-            allEntries.map((entry, index) => {
-              return (
-                <ListItem>
-                  <ListItemText
-                    primary={entry.wins}
-                    secondary={entry.lessons_learned}
-                  />
-                </ListItem>
-              );
-            })}
-        </List>
-        <EntryForm />
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+          <Grid item xs={3}>
+            <List>
+              {allEntries &&
+                allEntries.map((entry, index) => {
+                  return (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={entry.wins}
+                        secondary={entry.lessons_learned}
+                      />
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </Grid>
+          <Grid item xs={9}>
+            <Paper className={classes.paper}>
+              <EntryForm />
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
