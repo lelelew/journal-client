@@ -18,10 +18,14 @@ const styles = theme => ({
   }
 });
 
+const defaultState = {
+  isSubmitting: false,
+  wins: "",
+  lessonsLearned: ""
+};
+
 class EntryForm extends Component {
-  state = {
-    isSubmitting: false
-  };
+  state = defaultState;
 
   constructor(props) {
     super(props);
@@ -33,7 +37,7 @@ class EntryForm extends Component {
     event.preventDefault();
     this.setState({ isSubmitting: true });
     await saveEntry(this.state);
-    this.setState({ isSubmitting: false });
+    this.setState(defaultState);
   }
 
   handleChange(event) {
