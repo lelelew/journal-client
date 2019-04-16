@@ -25,13 +25,22 @@ class App extends Component {
     allEntries: []
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.loadEntries = this.loadEntries.bind(this);
+  }
+
+  loadEntries() {
     (async () => {
       let selectedEntry = await getEntry(1);
       this.setState({ selectedEntry });
       let allEntries = await getAllEntries();
       this.setState({ allEntries });
     })();
+  }
+
+  componentDidMount() {
+    this.loadEntries();
   }
 
   render() {
@@ -58,7 +67,7 @@ class App extends Component {
           </Grid>
           <Grid item xs={9}>
             <Paper className={classes.paper}>
-              <EntryForm />
+              <EntryForm afterSave={this.loadEntries} />
             </Paper>
           </Grid>
         </Grid>

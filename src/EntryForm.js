@@ -38,6 +38,10 @@ class EntryForm extends Component {
     this.setState({ isSubmitting: true });
     await saveEntry(this.state);
     this.setState(defaultState);
+    const { afterSave } = this.props;
+    if (afterSave) {
+      afterSave();
+    }
   }
 
   handleChange(event) {
