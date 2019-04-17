@@ -24,6 +24,7 @@ export async function saveEntry(entry) {
   } catch (error) {
     console.error("error saving entry from api");
     console.error(error);
+    throw error;
   }
   return savedEntry;
 }

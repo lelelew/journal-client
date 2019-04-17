@@ -3,6 +3,11 @@ import { saveEntry } from "./services.js";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import ErrorIcon from "@material-ui/icons/Error";
+import CloseIcon from "@material-ui/icons/Close";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import { Snackbar } from "@material-ui/core";
 
 const styles = theme => ({
   button: {
@@ -11,6 +16,21 @@ const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap"
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  errorIcon: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit
+  },
+  icon: {
+    fontSize: 20
+  },
+
+  message: {
+    display: "flex",
+    alignItems: "center"
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -32,17 +52,26 @@ class EntryForm extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onCloseError = this.onCloseError.bind(this);
   }
 
   async onSubmit(event) {
     event.preventDefault();
     this.setState({ isSubmitting: true });
-    await saveEntry(this.state);
-    this.setState(defaultState);
-    const { afterSave } = this.props;
-    if (afterSave) {
-      afterSave();
+    try {
+      await saveEntry(this.state);
+      this.setState(defaultState);
+      const { afterSave } = this.props;
+      if (afterSave) {
+        afterSave();
+      }
+    } catch (error) {
+      this.setState({ hasError: true });
     }
+  }
+
+  onCloseError(event) {
+    this.setState({ hasError: false });
   }
 
   handleChange(event) {
@@ -53,7 +82,7 @@ class EntryForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { goals, wins, lessonsLearned, isSubmitting } = this.state;
+    const { goals, wins, lessonsLearned, isSubmitting, hasError } = this.state;
 
     return (
       <div>
@@ -109,6 +138,34 @@ class EntryForm extends Component {
         >
           Submit
         </Button>
+
+        <Snackbar
+          open={hasError}
+          autoHideDuration={6000}
+          onClose={this.onCloseError}
+        >
+          <SnackbarContent
+            className={classes.error}
+            aria-describedby="client-snackbar"
+            message={
+              <span id="client-snackbar" className={classes.message}>
+                <ErrorIcon className={classes.errorIcon} />
+                Error saving entry. Try again later.
+              </span>
+            }
+            action={[
+              <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                className={classes.close}
+                onClick={this.onCloseError}
+              >
+                <CloseIcon className={classes.icon} />
+              </IconButton>
+            ]}
+          />
+        </Snackbar>
       </div>
     );
   }
