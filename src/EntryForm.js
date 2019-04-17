@@ -40,9 +40,12 @@ const styles = theme => ({
 
 const defaultState = {
   isSubmitting: false,
-  goals: "",
-  wins: "",
-  lessonsLearned: ""
+  hasError: false,
+  entry: {
+    goals: "",
+    wins: "",
+    lessonsLearned: ""
+  }
 };
 
 class EntryForm extends Component {
@@ -53,13 +56,16 @@ class EntryForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCloseError = this.onCloseError.bind(this);
+    if (props.selectedEntry) {
+      this.state.entry = props.selectedEntry;
+    }
   }
 
   async onSubmit(event) {
     event.preventDefault();
     this.setState({ isSubmitting: true });
     try {
-      await saveEntry(this.state);
+      await saveEntry(this.state.entry);
       this.setState(defaultState);
       const { afterSave } = this.props;
       if (afterSave) {
@@ -77,12 +83,14 @@ class EntryForm extends Component {
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({ [name]: value });
+    const entry = this.state.entry;
+    entry[name] = value;
+    this.setState({ entry });
   }
 
   render() {
     const { classes } = this.props;
-    const { goals, wins, lessonsLearned, isSubmitting, hasError } = this.state;
+    const { entry, isSubmitting, hasError } = this.state;
 
     return (
       <div>
@@ -93,7 +101,7 @@ class EntryForm extends Component {
           label="Goals"
           multiline
           rowsMax="4"
-          value={goals}
+          value={entry.goals || ""}
           onChange={this.handleChange}
           className={classes.textField}
           margin="normal"
@@ -107,7 +115,7 @@ class EntryForm extends Component {
           label="Wins"
           multiline
           rowsMax="4"
-          value={wins}
+          value={entry.wins || ""}
           onChange={this.handleChange}
           className={classes.textField}
           margin="normal"
@@ -121,7 +129,7 @@ class EntryForm extends Component {
           label="Lessons Learned"
           multiline
           rowsMax="4"
-          value={lessonsLearned}
+          value={entry.lessonsLearned || ""}
           onChange={this.handleChange}
           className={classes.textField}
           margin="normal"

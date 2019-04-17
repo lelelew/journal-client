@@ -32,11 +32,14 @@ class App extends Component {
 
   loadEntries() {
     (async () => {
-      let selectedEntry = await getEntry(1);
-      this.setState({ selectedEntry });
       let allEntries = await getAllEntries();
       this.setState({ allEntries });
     })();
+  }
+
+  onListItemClicked(selectedEntry) {
+    this.setState({ selectedEntry });
+    console.log(selectedEntry);
   }
 
   componentDidMount() {
@@ -44,7 +47,7 @@ class App extends Component {
   }
 
   render() {
-    const { allEntries } = this.state;
+    const { allEntries, selectedEntry } = this.state;
     const { classes } = this.props;
 
     return (
@@ -55,10 +58,13 @@ class App extends Component {
               {allEntries &&
                 allEntries.map((entry, index) => {
                   return (
-                    <ListItem key={index}>
+                    <ListItem
+                      key={index}
+                      onClick={event => this.onListItemClicked(entry)}
+                    >
                       <ListItemText
                         primary={entry.wins}
-                        secondary={entry.lessons_learned}
+                        secondary={entry.lessonsLearned}
                       />
                     </ListItem>
                   );
@@ -67,7 +73,11 @@ class App extends Component {
           </Grid>
           <Grid item xs={9}>
             <Paper className={classes.paper}>
-              <EntryForm afterSave={this.loadEntries} />
+              <EntryForm
+                key={selectedEntry && selectedEntry.id}
+                selectedEntry={selectedEntry}
+                afterSave={this.loadEntries}
+              />
             </Paper>
           </Grid>
         </Grid>
