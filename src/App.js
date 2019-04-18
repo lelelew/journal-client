@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { getEntry, getAllEntries } from "./services.js";
-import EntryForm from "./EntryForm.js";
+import DailyView from "./DailyView.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -73,7 +73,7 @@ class App extends Component {
           </Grid>
           <Grid item xs={9}>
             <Paper className={classes.paper}>
-              <EntryForm
+              <DailyView
                 key={selectedEntry && selectedEntry.id}
                 selectedEntry={selectedEntry}
                 afterSave={this.loadEntries}
