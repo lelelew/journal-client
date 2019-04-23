@@ -42,3 +42,17 @@ export async function getAllEntries() {
   }
   return entries;
 }
+
+export async function newQuote() {
+  let quote;
+  try {
+    const response = await fetch("http://localhost:4000/quote", {
+      method: "GET"
+    });
+    quote = await response.json();
+  } catch (error) {
+    console.error("error fetching quote from api");
+    console.error(error);
+  }
+  return quote;
+}

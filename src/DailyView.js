@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DailyViewEditor from "./DailyViewEditor.js";
+import { newQuote } from "./services.js";
 
 const styles = theme => ({});
 
@@ -15,7 +16,8 @@ const defaultState = {
     todaysTargets: [],
     eveningGrateful: []
   },
-  mode: "readOnly"
+  mode: "readOnly",
+  quote: {}
 };
 
 class DailyView extends Component {
@@ -28,6 +30,18 @@ class DailyView extends Component {
     }
     this.onChangeMode = this.onChangeMode.bind(this);
     this.onAfterSave = this.onAfterSave.bind(this);
+    this.loadRandomQuote = this.loadRandomQuote.bind(this);
+  }
+
+  loadRandomQuote() {
+    (async () => {
+      const quote = await newQuote();
+      this.setState(quote);
+    })();
+  }
+
+  componentDidMount() {
+    this.loadRandomQuote();
   }
 
   onChangeMode(event) {
@@ -43,7 +57,7 @@ class DailyView extends Component {
 
   render() {
     const { classes } = this.props;
-    const { entry, mode } = this.state;
+    const { entry, mode, quote } = this.state;
     let content;
     if (mode === "edit") {
       content = (
@@ -73,6 +87,11 @@ class DailyView extends Component {
           </ol>
           <strong>goals</strong>
           <p>{entry.goals}</p>
+          <blockquote>
+            {quote.quote}
+            <br />
+            &mdash; {quote.source}
+          </blockquote>
           <strong>wins</strong>
           <p>{entry.wins}</p>
           <strong>lesson learned</strong>

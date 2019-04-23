@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { saveEntry } from "./services.js";
+import { saveEntry, newQuote } from "./services.js";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -45,7 +45,8 @@ const defaultState = {
     goals: "",
     wins: "",
     lessonsLearned: ""
-  }
+  },
+  quote: {}
 };
 
 class DailyViewEditor extends Component {
@@ -53,12 +54,24 @@ class DailyViewEditor extends Component {
 
   constructor(props) {
     super(props);
+    this.loadRandomQuote = this.loadRandomQuote.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCloseError = this.onCloseError.bind(this);
     if (props.selectedEntry) {
       this.state.entry = props.selectedEntry;
     }
+  }
+
+  loadRandomQuote() {
+    (async () => {
+      const quote = await newQuote();
+      this.setState(quote);
+    })();
+  }
+
+  componentDidMount() {
+    this.loadRandomQuote();
   }
 
   async onSubmit(event) {
@@ -101,10 +114,15 @@ class DailyViewEditor extends Component {
 
   render() {
     const { classes } = this.props;
-    const { entry, isSubmitting, hasError } = this.state;
+    const { entry, isSubmitting, hasError, quote } = this.state;
 
     return (
       <div>
+        <blockquote>
+          {quote.quote}
+          <br />
+          &mdash; {quote.source}
+        </blockquote>
         <Typography variant="subtitle1">
           This morning I'm grateful for:
         </Typography>

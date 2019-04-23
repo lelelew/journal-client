@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { getEntry, getAllEntries } from "./services.js";
+import { getAllEntries } from "./services.js";
 import DailyView from "./DailyView.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
