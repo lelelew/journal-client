@@ -10,7 +10,10 @@ const defaultState = {
   entry: {
     goals: "",
     wins: "",
-    lessonsLearned: ""
+    lessonsLearned: "",
+    morningGrateful: [],
+    todaysTargets: [],
+    eveningGrateful: []
   },
   mode: "readOnly"
 };
@@ -50,6 +53,24 @@ class DailyView extends Component {
       content = (
         <div>
           <h3>reading your journal</h3>
+          <strong>this morning I am grateful for:</strong>
+          <ol>
+            {entry.morningGrateful.map((content, index) => (
+              <li key={index}>{content}</li>
+            ))}
+          </ol>
+          <strong>today's targets are:</strong>
+          <ol>
+            {entry.todaysTargets.map((content, index) => (
+              <li key={index}>{content}</li>
+            ))}
+          </ol>
+          <strong>this evening I am grateful for:</strong>
+          <ol>
+            {entry.eveningGrateful.map((content, index) => (
+              <li key={index}>{content}</li>
+            ))}
+          </ol>
           <strong>goals</strong>
           <p>{entry.goals}</p>
           <strong>wins</strong>

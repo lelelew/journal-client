@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ErrorIcon from "@material-ui/icons/Error";
 import CloseIcon from "@material-ui/icons/Close";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar, Typography } from "@material-ui/core";
 
 const styles = theme => ({
   button: {
@@ -84,7 +84,18 @@ class DailyViewEditor extends Component {
     const name = event.target.name;
     const value = event.target.value;
     const entry = this.state.entry;
-    entry[name] = value;
+    if (name.indexOf("morningGrateful") !== -1) {
+      const index = name.charAt(name.length - 1);
+      entry.morningGrateful[index] = value;
+    } else if (name.indexOf("todaysTargets") !== -1) {
+      const index = name.charAt(name.length - 1);
+      entry.todaysTargets[index] = value;
+    } else if (name.indexOf("eveningGrateful") !== -1) {
+      const index = name.charAt(name.length - 1);
+      entry.eveningGrateful[index] = value;
+    } else {
+      entry[name] = value;
+    }
     this.setState({ entry });
   }
 
@@ -94,6 +105,139 @@ class DailyViewEditor extends Component {
 
     return (
       <div>
+        <Typography variant="subtitle1">
+          This morning I'm grateful for:
+        </Typography>
+        <TextField
+          name="morningGrateful0"
+          id="filled-multiline-flexible"
+          label="#1"
+          multiline
+          rowsMax="2"
+          value={entry.morningGrateful[0] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#1"
+          variant="filled"
+        />
+
+        <TextField
+          name="morningGrateful1"
+          id="filled-multiline-flexible"
+          label="#2"
+          multiline
+          rowsMax="2"
+          value={entry.morningGrateful[1] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#2"
+          variant="filled"
+        />
+
+        <TextField
+          name="morningGrateful2"
+          id="filled-multiline-flexible"
+          label="#3"
+          multiline
+          rowsMax="2"
+          value={entry.morningGrateful[2] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#3"
+          variant="filled"
+        />
+
+        <Typography variant="subtitle1">Today's Targets:</Typography>
+        <TextField
+          name="todaysTargets0"
+          id="filled-multiline-flexible"
+          label="#1"
+          multiline
+          rowsMax="2"
+          value={entry.todaysTargets[0] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#1"
+          variant="filled"
+        />
+
+        <TextField
+          name="todaysTargets1"
+          id="filled-multiline-flexible"
+          label="#2"
+          multiline
+          rowsMax="2"
+          value={entry.todaysTargets[1] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#2"
+          variant="filled"
+        />
+
+        <TextField
+          name="todaysTargets2"
+          id="filled-multiline-flexible"
+          label="#3"
+          multiline
+          rowsMax="2"
+          value={entry.todaysTargets[2] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#3"
+          variant="filled"
+        />
+
+        <Typography variant="subtitle1">
+          This evening I'm grateful for:
+        </Typography>
+        <TextField
+          name="eveningGrateful0"
+          id="filled-multiline-flexible"
+          label="#1"
+          multiline
+          rowsMax="2"
+          value={entry.eveningGrateful[0] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#1"
+          variant="filled"
+        />
+
+        <TextField
+          name="eveningGrateful1"
+          id="filled-multiline-flexible"
+          label="#2"
+          multiline
+          rowsMax="2"
+          value={entry.eveningGrateful[1] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#2"
+          variant="filled"
+        />
+
+        <TextField
+          name="eveningGrateful2"
+          id="filled-multiline-flexible"
+          label="#3"
+          multiline
+          rowsMax="2"
+          value={entry.eveningGrateful[2] || ""}
+          onChange={this.handleChange}
+          className={classes.textField}
+          margin="normal"
+          helperText="#3"
+          variant="filled"
+        />
+
         <TextField
           name="goals"
           id="filled-multiline-flexible"
