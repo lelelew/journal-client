@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { getAllEntries } from "./services.js";
+import { getAllEntries, getEntry } from "./services.js";
 import DailyView from "./DailyView.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -33,7 +33,9 @@ class App extends Component {
   loadEntries() {
     (async () => {
       let allEntries = await getAllEntries();
-      this.setState({ allEntries });
+      const date = this.props.match.params.date;
+      const selectedEntry = await getEntry(date);
+      this.setState({ allEntries, selectedEntry });
     })();
   }
 

@@ -1,7 +1,7 @@
 export async function getEntry(date) {
   let entry;
   try {
-    const response = await fetch(`http://localhost:4000?date=${date}`);
+    const response = await fetch(`http://localhost:4000/entry?date=${date}`);
     entry = await response.json();
   } catch (error) {
     console.error(`error fetching entry from api for date ${date}`);

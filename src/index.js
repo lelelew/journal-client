@@ -5,11 +5,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import About from "./About.js";
+import Home from "./Home.js";
 
 const routes = (
   <Router>
-    <Route path="/" exact component={App} />
+    <Route path="/" exact component={Home} />
     <Route path="/about" exact component={About} />
+    <Route path="/entry/:date" component={App} />
   </Router>
 );
 
