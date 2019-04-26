@@ -8,6 +8,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import CloseIcon from "@material-ui/icons/Close";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { Snackbar, Typography } from "@material-ui/core";
+import dayjs from "dayjs";
 
 const styles = theme => ({
   button: {
@@ -34,7 +35,8 @@ const styles = theme => ({
   },
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
+    width: 200
   }
 });
 
@@ -44,7 +46,11 @@ const defaultState = {
   entry: {
     goals: "",
     wins: "",
-    lessonsLearned: ""
+    lessonsLearned: "",
+    entryDate: dayjs(Date.now()).format("YYYY-MM-DD"),
+    morningGrateful: [],
+    eveningGrateful: [],
+    todaysTargets: []
   },
   quote: {}
 };
@@ -118,6 +124,18 @@ class DailyViewEditor extends Component {
 
     return (
       <div>
+        <TextField
+          id="date"
+          name="entryDate"
+          label="Entry Date"
+          type="date"
+          defaultValue={entry.entryDate}
+          onChange={this.handleChange}
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
         <blockquote>
           {quote.quote}
           <br />

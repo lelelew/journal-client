@@ -4,6 +4,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DailyViewEditor from "./DailyViewEditor.js";
 import { newQuote } from "./services.js";
+import dayjs from "dayjs";
 
 const styles = theme => ({});
 
@@ -14,7 +15,8 @@ const defaultState = {
     lessonsLearned: "",
     morningGrateful: [],
     todaysTargets: [],
-    eveningGrateful: []
+    eveningGrateful: [],
+    entryDate: dayjs(Date.now()).format("YYYY-MM-DD")
   },
   mode: "readOnly",
   quote: {}
@@ -58,6 +60,7 @@ class DailyView extends Component {
   render() {
     const { classes } = this.props;
     const { entry, mode, quote } = this.state;
+    const { entryDate } = entry;
     let content;
     if (mode === "edit") {
       content = (
@@ -66,7 +69,11 @@ class DailyView extends Component {
     } else {
       content = (
         <div>
-          <h3>reading your journal</h3>
+          <h3>
+            {entryDate && dayjs(entryDate).format("MM/DD/YYYY")} Reading Your
+            Journal
+          </h3>
+
           <strong>this morning I am grateful for:</strong>
           <ol>
             {entry.morningGrateful.map((content, index) => (
