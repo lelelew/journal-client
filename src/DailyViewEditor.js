@@ -84,11 +84,12 @@ class DailyViewEditor extends Component {
     event.preventDefault();
     this.setState({ isSubmitting: true });
     try {
-      await saveEntry(this.state.entry);
+      const entry = this.state.entry;
+      await saveEntry(entry);
       this.setState(defaultState);
       const { afterSave } = this.props;
       if (afterSave) {
-        afterSave();
+        afterSave(entry);
       }
     } catch (error) {
       this.setState({ hasError: true });

@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import history from "./history.js";
 
 const styles = theme => ({
   root: {
@@ -28,20 +29,28 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.loadEntries = this.loadEntries.bind(this);
+    this.onAfterSave = this.onAfterSave.bind(this);
   }
 
   loadEntries() {
     (async () => {
       let allEntries = await getAllEntries();
       const date = this.props.match.params.date;
-      const selectedEntry = await getEntry(date);
-      this.setState({ allEntries, selectedEntry });
+      if (date) {
+        const selectedEntry = await getEntry(date);
+        this.setState({ selectedEntry });
+      }
+      this.setState({ allEntries });
     })();
   }
 
   onListItemClicked(selectedEntry) {
     this.setState({ selectedEntry });
     console.log(selectedEntry);
+  }
+
+  onAfterSave(entry) {
+    history.push(`/entry/${entry.entryDate}`);
   }
 
   componentDidMount() {
@@ -78,7 +87,7 @@ class App extends Component {
               <DailyView
                 key={selectedEntry && selectedEntry.id}
                 selectedEntry={selectedEntry}
-                afterSave={this.loadEntries}
+                afterSave={this.onAfterSave}
               />
             </Paper>
           </Grid>

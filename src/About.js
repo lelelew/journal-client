@@ -1,6 +1,10 @@
 import * as React from "react";
 
 function About(props) {
-  return <h3>About</h3>;
+  return (
+    <React.Fragment>
+      <h3>About</h3>
+    </React.Fragment>
+  );
 }
 export default About;

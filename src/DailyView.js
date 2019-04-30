@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
@@ -29,6 +30,8 @@ class DailyView extends Component {
     super(props);
     if (props.selectedEntry) {
       this.state.entry = props.selectedEntry;
+    } else {
+      this.state.mode = "edit";
     }
     this.onChangeMode = this.onChangeMode.bind(this);
     this.onAfterSave = this.onAfterSave.bind(this);
@@ -50,10 +53,10 @@ class DailyView extends Component {
     this.setState({ mode: event.target.checked ? "edit" : "readOnly" });
   }
 
-  onAfterSave(event) {
+  onAfterSave(entry) {
     this.setState({ mode: "readOnly" });
     if (this.props.afterSave) {
-      this.props.afterSave();
+      this.props.afterSave(entry);
     }
   }
 
