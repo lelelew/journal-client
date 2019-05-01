@@ -8,7 +8,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import history from "./history.js";
+import { Link, navigate } from "@reach/router";
+import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -29,32 +30,47 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.loadEntries = this.loadEntries.bind(this);
+    this.loadEntry = this.loadEntry.bind(this);
     this.onAfterSave = this.onAfterSave.bind(this);
+    this.onNewEntryClicked = this.onNewEntryClicked.bind(this);
   }
 
-  loadEntries() {
-    (async () => {
-      let allEntries = await getAllEntries();
-      const date = this.props.match.params.date;
-      if (date) {
-        const selectedEntry = await getEntry(date);
-        this.setState({ selectedEntry });
-      }
-      this.setState({ allEntries });
-    })();
+  async loadEntries() {
+    let allEntries = await getAllEntries();
+    this.setState({ allEntries });
   }
 
-  onListItemClicked(selectedEntry) {
-    this.setState({ selectedEntry });
-    console.log(selectedEntry);
+  async loadEntry() {
+    const date = this.props.date;
+    if (date) {
+      const selectedEntry = await getEntry(date);
+      this.setState({ selectedEntry });
+    } else {
+      this.setState({ selectedEntry: null });
+    }
+  }
+
+  onNewEntryClicked() {
+    navigate(`/entry/new`);
+  }
+
+  onListItemClicked(entry) {
+    navigate(`/entry/${entry.entryDate}`);
   }
 
   onAfterSave(entry) {
-    history.push(`/entry/${entry.entryDate}`);
+    navigate(`/entry/${entry.entryDate}`);
   }
 
   componentDidMount() {
     this.loadEntries();
+    this.loadEntry();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.date !== this.props.date) {
+      this.loadEntry();
+    }
   }
 
   render() {
@@ -74,18 +90,25 @@ class App extends Component {
                       onClick={event => this.onListItemClicked(entry)}
                     >
                       <ListItemText
-                        primary={entry.wins}
-                        secondary={entry.lessonsLearned}
+                        primary={entry.entryDate}
+                        secondary={`Wins - ${entry.wins}`}
                       />
                     </ListItem>
                   );
                 })}
             </List>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={this.onNewEntryClicked}
+            >
+              Start New Entry
+            </Button>
           </Grid>
           <Grid item xs={9}>
             <Paper className={classes.paper}>
               <DailyView
-                key={selectedEntry && selectedEntry.id}
+                key={selectedEntry ? selectedEntry.id : "new"}
                 selectedEntry={selectedEntry}
                 afterSave={this.onAfterSave}
               />

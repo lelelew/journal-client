@@ -3,17 +3,18 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Router } from "@reach/router";
 import About from "./About.js";
 import Home from "./Home.js";
-import history from "./history.js";
+import NotFound from "./NotFound";
 
 const routes = (
-  <Router history={history}>
-    <Route path="/" exact component={Home} />
-    <Route path="/about" exact component={About} />
-    <Route path="/entries/new" exact component={App} />
-    <Route path="/entry/:date" component={App} />
+  <Router>
+    <Home path="/" />
+    <About path="/about" />
+    <App path="/entry/new" />
+    <App path="/entry/:date" />
+    <NotFound default />
   </Router>
 );
 

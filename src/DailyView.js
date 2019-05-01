@@ -24,13 +24,14 @@ const defaultState = {
 };
 
 class DailyView extends Component {
-  state = defaultState;
+  state = Object.assign({}, defaultState);
 
   constructor(props) {
     super(props);
     if (props.selectedEntry) {
       this.state.entry = props.selectedEntry;
     } else {
+      this.state.entry = Object.assign({}, defaultState.entry);
       this.state.mode = "edit";
     }
     this.onChangeMode = this.onChangeMode.bind(this);
@@ -38,11 +39,9 @@ class DailyView extends Component {
     this.loadRandomQuote = this.loadRandomQuote.bind(this);
   }
 
-  loadRandomQuote() {
-    (async () => {
-      const quote = await newQuote();
-      this.setState(quote);
-    })();
+  async loadRandomQuote() {
+    const quote = await newQuote();
+    this.setState(quote);
   }
 
   componentDidMount() {
@@ -67,7 +66,11 @@ class DailyView extends Component {
     let content;
     if (mode === "edit") {
       content = (
-        <DailyViewEditor selectedEntry={entry} afterSave={this.onAfterSave} />
+        <DailyViewEditor
+          key={entry.id ? entry.id : "new"}
+          selectedEntry={entry}
+          afterSave={this.onAfterSave}
+        />
       );
     } else {
       content = (
