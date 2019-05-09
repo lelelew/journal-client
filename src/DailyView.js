@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DailyViewEditor from "./DailyViewEditor.js";
-import { newQuote } from "./services.js";
+import { newQuote } from "./services";
 import dayjs from "dayjs";
 
 const styles = theme => ({});

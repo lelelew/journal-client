@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { saveEntry, newQuote } from "./services.js";
+import { saveEntry, newQuote } from "./services";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";

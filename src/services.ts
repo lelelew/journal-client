@@ -1,16 +1,28 @@
-export async function getEntry(date) {
-  let entry;
+import { Entry, Quote } from "./types";
+
+// export const getEntry: (date: string) => Promise<Entry> = async (
+//   date: string
+// ) => {
+//   try {
+//     const response = await fetch(`http://localhost:4000/entry?date=${date}`);
+//     return await response.json();
+//   } catch (error) {
+//     console.error(`error fetching entry from api for date ${date}`);
+//     console.error(error);
+//   }
+// };
+
+export async function getEntry(date: string): Promise<Entry | undefined> {
   try {
     const response = await fetch(`http://localhost:4000/entry?date=${date}`);
-    entry = await response.json();
+    return await response.json();
   } catch (error) {
     console.error(`error fetching entry from api for date ${date}`);
     console.error(error);
   }
-  return entry;
 }
 
-export async function saveEntry(entry) {
+export async function saveEntry(entry: Entry): Promise<Entry | undefined> {
   let savedEntry;
   try {
     const response = await fetch("http://localhost:4000/entries/new", {
@@ -29,7 +41,7 @@ export async function saveEntry(entry) {
   return savedEntry;
 }
 
-export async function getAllEntries() {
+export async function getAllEntries(): Promise<Array<Entry> | undefined> {
   let entries;
   try {
     const response = await fetch("http://localhost:4000/entries", {
@@ -43,7 +55,7 @@ export async function getAllEntries() {
   return entries;
 }
 
-export async function newQuote() {
+export async function newQuote(): Promise<Quote | undefined> {
   let quote;
   try {
     const response = await fetch("http://localhost:4000/quote", {

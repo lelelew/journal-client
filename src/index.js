@@ -4,14 +4,14 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Router } from "@reach/router";
-import About from "./About.js";
-import Home from "./Home.js";
+import About from "./About";
+import Home from "./Home";
 import NotFound from "./NotFound";
 
 const routes = (
   <Router>
     <Home path="/" />
-    <About path="/about" />
+    <About path="/about" message="the Journal" />
     <App path="/entry/new" />
     <App path="/entry/:date" />
     <NotFound default />
