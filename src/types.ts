@@ -1,8 +1,8 @@
 export interface Entry {
-  id: number;
+  id?: number;
   entryDate: string;
   wins: string;
-  lessonsLearned: Array<string>;
+  lessonsLearned: string;
   goals: string;
   morningGrateful: Array<string>;
   todaysTargets: Array<string>;

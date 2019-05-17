@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { getAllEntries, getEntry } from "./services";
-import DailyView from "./DailyView.js";
+import DailyView from "./DailyView";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,8 +10,9 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link, navigate } from "@reach/router";
 import { Button } from "@material-ui/core";
+import { Entry, Quote } from "./types";
 
-const styles = theme => ({
+const styles: any = (theme: any) => ({
   root: {
     flexGrow: 1,
     padding: theme.spacing.unit * 2
@@ -22,12 +23,23 @@ const styles = theme => ({
   }
 });
 
-class App extends Component {
-  state = {
+interface Props {
+  date?: string;
+  classes: any;
+  path?: string;
+}
+
+interface State {
+  allEntries: Array<Entry>;
+  selectedEntry?: Entry;
+}
+
+class App extends Component<Props> {
+  state: State = {
     allEntries: []
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.loadEntries = this.loadEntries.bind(this);
     this.loadEntry = this.loadEntry.bind(this);
@@ -54,11 +66,11 @@ class App extends Component {
     navigate(`/entry/new`);
   }
 
-  onListItemClicked(entry) {
+  onListItemClicked(entry: Entry) {
     navigate(`/entry/${entry.entryDate}`);
   }
 
-  onAfterSave(entry) {
+  onAfterSave(entry: Entry) {
     navigate(`/entry/${entry.entryDate}`);
   }
 
@@ -67,7 +79,7 @@ class App extends Component {
     this.loadEntry();
   }
 
-  componentDidUpdate(previousProps, previousState) {
+  componentDidUpdate(previousProps: Props, previousState: State) {
     if (previousProps.date !== this.props.date) {
       this.loadEntry();
     }

@@ -2,6 +2,7 @@ import * as React from "react";
 
 interface Props {
   message?: string;
+  path?: string;
 }
 
 function About(props: Props) {

@@ -9,8 +9,9 @@ import CloseIcon from "@material-ui/icons/Close";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { Snackbar, Typography } from "@material-ui/core";
 import dayjs from "dayjs";
+import { Entry, Quote } from "./types";
 
-const styles = theme => ({
+const styles: any = (theme: any) => ({
   button: {
     margin: theme.spacing.unit
   },
@@ -52,13 +53,29 @@ const defaultState = {
     eveningGrateful: [],
     todaysTargets: []
   },
-  quote: {}
+  quote: {
+    quote: "get ready for wisdom",
+    source: "journalapp"
+  }
 };
 
-class DailyViewEditor extends Component {
-  state = defaultState;
+interface Props {
+  selectedEntry: Entry;
+  afterSave: (entry: Entry) => void;
+  classes: any;
+}
 
-  constructor(props) {
+interface State {
+  entry: Entry;
+  quote: Quote;
+  isSubmitting: boolean;
+  hasError: boolean;
+}
+
+class DailyViewEditor extends Component<Props> {
+  state: State = Object.assign({}, defaultState);
+
+  constructor(props: Props) {
     super(props);
     this.loadRandomQuote = this.loadRandomQuote.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -69,18 +86,16 @@ class DailyViewEditor extends Component {
     }
   }
 
-  loadRandomQuote() {
-    (async () => {
-      const quote = await newQuote();
-      this.setState(quote);
-    })();
+  async loadRandomQuote() {
+    const quote = await newQuote();
+    this.setState({ quote });
   }
 
   componentDidMount() {
     this.loadRandomQuote();
   }
 
-  async onSubmit(event) {
+  async onSubmit(event: React.MouseEvent<HTMLElement, MouseEvent>) {
     event.preventDefault();
     this.setState({ isSubmitting: true });
     try {
@@ -96,22 +111,22 @@ class DailyViewEditor extends Component {
     }
   }
 
-  onCloseError(event) {
+  onCloseError(event: React.SyntheticEvent<any, Event>) {
     this.setState({ hasError: false });
   }
 
-  handleChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
+  handleChange(event: any) {
+    const name: keyof Entry = event.target.name;
+    const value: string = event.target.value;
     const entry = this.state.entry;
     if (name.indexOf("morningGrateful") !== -1) {
-      const index = name.charAt(name.length - 1);
+      const index = Number(name.charAt(name.length - 1));
       entry.morningGrateful[index] = value;
     } else if (name.indexOf("todaysTargets") !== -1) {
-      const index = name.charAt(name.length - 1);
+      const index = Number(name.charAt(name.length - 1));
       entry.todaysTargets[index] = value;
     } else if (name.indexOf("eveningGrateful") !== -1) {
-      const index = name.charAt(name.length - 1);
+      const index = Number(name.charAt(name.length - 1));
       entry.eveningGrateful[index] = value;
     } else {
       entry[name] = value;

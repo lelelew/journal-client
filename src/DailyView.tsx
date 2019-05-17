@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import DailyViewEditor from "./DailyViewEditor.js";
+import DailyViewEditor from "./DailyViewEditor";
 import { newQuote } from "./services";
 import dayjs from "dayjs";
+import { Entry, Quote } from "./types";
 
-const styles = theme => ({});
+const styles = (theme: any) => ({});
 
 const defaultState = {
   entry: {
@@ -20,13 +21,28 @@ const defaultState = {
     entryDate: dayjs(Date.now()).format("YYYY-MM-DD")
   },
   mode: "readOnly",
-  quote: {}
+  quote: {
+    quote: "get ready for wisdom",
+    source: "journalapp"
+  }
 };
 
-class DailyView extends Component {
-  state = Object.assign({}, defaultState);
+interface Props {
+  selectedEntry?: Entry;
+  afterSave: (entry: Entry) => void;
+  classes: any;
+}
 
-  constructor(props) {
+interface State {
+  entry: Entry;
+  mode: string;
+  quote: Quote;
+}
+
+class DailyView extends Component<Props> {
+  state: State = Object.assign({}, defaultState);
+
+  constructor(props: Props) {
     super(props);
     if (props.selectedEntry) {
       this.state.entry = props.selectedEntry;
@@ -41,21 +57,22 @@ class DailyView extends Component {
 
   async loadRandomQuote() {
     const quote = await newQuote();
-    this.setState(quote);
+    this.setState({ quote });
   }
 
   componentDidMount() {
     this.loadRandomQuote();
   }
 
-  onChangeMode(event) {
+  onChangeMode(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ mode: event.target.checked ? "edit" : "readOnly" });
   }
 
-  onAfterSave(entry) {
+  onAfterSave(entry: Entry) {
+    const { afterSave } = this.props;
     this.setState({ mode: "readOnly" });
-    if (this.props.afterSave) {
-      this.props.afterSave(entry);
+    if (afterSave) {
+      afterSave(entry);
     }
   }
 
