@@ -10,7 +10,7 @@ import NotFound from "./NotFound";
 
 const routes = (
   <Router>
-    <Home path="/" />
+    <App path="/" />
     <About path="/about" message="the Journal" />
     <App path="/entry/new" />
     <App path="/entry/:date" />
