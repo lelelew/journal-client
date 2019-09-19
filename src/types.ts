@@ -7,6 +7,7 @@ export interface Entry {
   morningGrateful: Array<string>;
   todaysTargets: Array<string>;
   eveningGrateful: Array<string>;
+  [key: string]: any;
 }
 
 export interface Quote {

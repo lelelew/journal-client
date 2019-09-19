@@ -116,7 +116,7 @@ class DailyViewEditor extends Component<Props> {
   }
 
   handleChange(event: any) {
-    const name: keyof Entry = event.target.name;
+    const name: string = event.target.name;
     const value: string = event.target.value;
     const entry = this.state.entry;
     if (name.indexOf("morningGrateful") !== -1) {
